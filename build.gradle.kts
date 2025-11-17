@@ -3,7 +3,7 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "java")
+    apply(plugin = "java-library")
 
     repositories {
         mavenCentral()

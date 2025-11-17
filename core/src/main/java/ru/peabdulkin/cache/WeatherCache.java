@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class WeatherCache {
 
@@ -13,7 +14,7 @@ public class WeatherCache {
     private final Duration ttlMinutes;
 
     public WeatherCache(int capacity, int ttlMinutes) {
-        this.cache = new LinkedHashMap<>() {
+        this.cache = new LinkedHashMap<>(16, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, CachedWeatherInfo> eldest) {
                 return this.size() > capacity;
@@ -32,5 +33,9 @@ public class WeatherCache {
 
     public void put(String city, WeatherInfoDto weatherInfoDto) {
         cache.put(city, new CachedWeatherInfo(weatherInfoDto, Instant.now()));
+    }
+
+    public Set<String> getKeys() {
+        return cache.keySet();
     }
 }

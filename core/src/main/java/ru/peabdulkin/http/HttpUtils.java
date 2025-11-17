@@ -18,8 +18,7 @@ public class HttpUtils {
 
     public static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.newHttpClient();
 
-    public static <T> T processGetRequest(HttpClient httpClient, String uri,
-                                          Class<T> responseClass, String errorMessage) throws WeatherIOException, WeatherServerException {
+    public static <T> T processGetRequest(String uri, Class<T> responseClass, String errorMessage) throws WeatherIOException, WeatherServerException {
 
         var request = HttpRequest.newBuilder(URI.create(uri))
                                  .GET()

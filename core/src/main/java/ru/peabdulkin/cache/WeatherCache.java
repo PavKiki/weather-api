@@ -23,7 +23,7 @@ public class WeatherCache {
         this.ttlMinutes = Duration.ofMinutes(ttlMinutes);
     }
 
-    public WeatherInfoDto get(String city) {
+    public synchronized WeatherInfoDto get(String city) {
         var entry = cache.get(city);
 
         return   entry != null && Duration.between(entry.timestamp(), Instant.now()).compareTo(ttlMinutes) < 0
@@ -31,11 +31,11 @@ public class WeatherCache {
                : null;
     }
 
-    public void put(String city, WeatherInfoDto weatherInfoDto) {
+    public synchronized void put(String city, WeatherInfoDto weatherInfoDto) {
         cache.put(city, new CachedWeatherInfo(weatherInfoDto, Instant.now()));
     }
 
-    public Set<String> getKeys() {
+    public synchronized Set<String> getKeys() {
         return cache.keySet();
     }
 }

@@ -15,9 +15,13 @@ public class CoordinatesDeserializer extends JsonDeserializer<CoordinatesDto> {
     public CoordinatesDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
 
-        var longitude = root.at("/0/lon").asText();
-        var latitude = root.at("/0/lat").asText();
+        var longitudeNode = root.at("/0/lon");
+        var latitudeNode = root.at("/0/lat");
 
-        return new CoordinatesDto(longitude, latitude);
+        if (longitudeNode.isMissingNode() || latitudeNode.isMissingNode()) {
+            throw new IOException("Coordinates not found");
+        }
+
+        return new CoordinatesDto(longitudeNode.asText(), latitudeNode.asText());
     }
 }

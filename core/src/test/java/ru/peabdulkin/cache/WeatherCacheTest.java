@@ -62,9 +62,9 @@ public class WeatherCacheTest {
         WeatherInfoDto paris = sampleDto("Paris");
         WeatherInfoDto rome = sampleDto("Rome");
 
-        cache.put("Moscow", Moscow); // 1
-        cache.put("Paris", paris);   // 2
-        cache.put("Rome", rome);     // 3 -> capacity 2 -> первый (Moscow) должен вылететь
+        cache.put("Moscow", Moscow);
+        cache.put("Paris", paris);
+        cache.put("Rome", rome);
 
         assertNull(cache.get("Moscow"), "Oldest entry must be evicted when capacity exceeded");
         assertSame(paris, cache.get("Paris"));

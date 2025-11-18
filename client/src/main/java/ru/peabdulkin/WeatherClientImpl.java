@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static ru.peabdulkin.mapper.MapperUtils.convertToJson;
+import static ru.peabdulkin.mapper.WeatherInfoJsonMapper.convertToJsonByDefaultMapper;
 
 class WeatherClientImpl implements WeatherClient {
 
@@ -24,10 +24,10 @@ class WeatherClientImpl implements WeatherClient {
     private final ScheduledExecutorService scheduler;
     private final WeatherCache cache;
 
-    WeatherClientImpl(WeatherApiClient apiClient, SdkMode mode) {
+    WeatherClientImpl(WeatherApiClient apiClient, SdkMode mode, WeatherCache cache) {
         this.weatherApiClient = apiClient;
         this.scheduler = (mode == SdkMode.POLLING) ? Executors.newSingleThreadScheduledExecutor() : null;
-        this.cache = new WeatherCache(10, 10);
+        this.cache = cache;
 
         if (mode == SdkMode.POLLING) {
             scheduler.scheduleAtFixedRate(() -> {
@@ -56,6 +56,13 @@ class WeatherClientImpl implements WeatherClient {
             weather = weatherApiClient.getWeatherInfo(city);
             cache.put(city, weather);
         }
-        return convertToJson(weather);
+        return convertToJsonByDefaultMapper(weather);
+    }
+
+    @Override
+    public void shutdown() {
+        if (scheduler != null) {
+            scheduler.shutdownNow();
+        }
     }
 }

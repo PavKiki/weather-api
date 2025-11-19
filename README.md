@@ -66,14 +66,14 @@ Example output:
 ### Gradle
 
 ~~~groovy
-implementation("ru.peabdulkin:weather-sdk:1.0.0")
+implementation("ru.peabdulkin.weather-api:weather-sdk:1.0.0")
 ~~~
 
 ### Maven
 
 ~~~xml
 <dependency>
-    <groupId>ru.peabdulkin</groupId>
+    <groupId>ru.peabdulkin.weather-api</groupId>
     <artifactId>weather-sdk</artifactId>
     <version>1.0.0</version>
 </dependency>
